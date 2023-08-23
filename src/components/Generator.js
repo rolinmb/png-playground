@@ -59,31 +59,33 @@ const Generator = () => {
     <div className='page'>
       <h2 className='page-header'>PNG Generator</h2>
       <h3 className='generator-param-header'><i>Output Dimensions</i></h3>
-      <div className='generator-slider-container'>
-        <h4 className='generator-param-preview'>Width (Currently {canvasWidth} px)</h4>
-        <input className='generator-slider' type='range' value={canvasWidth} onChange={e => setCanvasWidth(e.target.value)} min='400' max='1500' step='10' />
-      </div>
-      <div className='generator-slider-container'>
-        <h4 className='generator-param-preview'>Height (Currently {canvasHeight} px)</h4>
-        <input className='generator-slider' type='range' value={canvasHeight} onChange={e => setCanvasHeight(e.target.value)} min='400' max='1500' step='10' />
-      </div>
-      <h3 className='generator-param-header'><i>Grid Generation</i></h3>
-      <div className='generator-slider-container'>
-        <h4 className='generator-param-preview'>Grid Frequency (Currently {gridFrequency})</h4>
-        <input className='generator-slider' type='range' value={gridFrequency} onChange={e => setGridFrequency(e.target.value)} min='0' max='1000' step='5' />
-      </div>
-      <div className='generator-slider-container'>
-        <h4 className='generator-param-preview'>Grid Amplitude (Currently {gridAmplitude})</h4>
-        <input className='generator-slider' type='range' value={gridAmplitude} onChange={e => setGridAmplitude(e.target.value)} min='0' max='1000' step='5' />
-      </div>
-      <h3 className='generator-param-header'><i>Warping</i></h3>
-      <div className='generator-slider-container'>
-        <h4 className='generator-param-preview'>Warp Scaling (Currently {warpScaling})</h4>
-        <input className='generator-slider' type='range' value={warpScaling} onChange={e => setWarpScaling(e.target.value)} min='0' max='1000' step='5' />
-      </div>
-      <div className='generator-slider-container'>
-        <h4 className='generator-param-preview'>Warp Tessellation (Currently {warpTessellate})</h4>
-        <input className='generator-slider' type='range' value={warpTessellate} onChange={e => setWarpTessellate(e.target.value)} min='0' max='250' step='1' />
+      <div className='generator-main-container'>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Width (Currently {canvasWidth} px)</h4>
+          <input className='generator-slider' type='range' value={canvasWidth} onChange={e => setCanvasWidth(e.target.value)} min='400' max='1500' step='10' />
+        </div>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Height (Currently {canvasHeight} px)</h4>
+          <input className='generator-slider' type='range' value={canvasHeight} onChange={e => setCanvasHeight(e.target.value)} min='400' max='1500' step='10' />
+        </div>
+        <h3 className='generator-param-header'><i>Grid Generation</i></h3>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Grid Frequency (Currently {gridFrequency})</h4>
+          <input className='generator-slider' type='range' value={gridFrequency} onChange={e => setGridFrequency(e.target.value)} min='0' max='1000' step='5' />
+        </div>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Grid Amplitude (Currently {gridAmplitude})</h4>
+          <input className='generator-slider' type='range' value={gridAmplitude} onChange={e => setGridAmplitude(e.target.value)} min='0' max='1000' step='5' />
+        </div>
+        <h3 className='generator-param-header'><i>Warping</i></h3>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Warp Scaling (Currently {warpScaling})</h4>
+          <input className='generator-slider' type='range' value={warpScaling} onChange={e => setWarpScaling(e.target.value)} min='0' max='1000' step='5' />
+        </div>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Warp Tessellation (Currently {warpTessellate})</h4>
+          <input className='generator-slider' type='range' value={warpTessellate} onChange={e => setWarpTessellate(e.target.value)} min='0' max='250' step='1' />
+        </div>
       </div>
       <button className='generate-btn' onClick={e => generatePng(e)}>Generate</button>
       <a href='/' className='download-link' id='generator-download-link' download='generator_out.png' style={{display: 'none'}}>Download new .png</a>

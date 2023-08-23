@@ -78,9 +78,29 @@ main {
   font-size: 24px;
 }
 
-.generator-preview {
-  display: block;
-  margin: 0 auto;
+.welcome-text-content {
+  height: 150px;
+  background-image: url('./images/editor_test.png');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  padding: 20px;
+}
+
+.welcome-link {
+  color: pink;
+  text-decoration: none;
+}
+
+.welcome-link:hover {
+  color: hotpink;
+}
+
+.generator-main-container {
+  background-image: url('./images/editor_test.png');
+  background-size: cover;
+  background-position: center;
+  color: white;
 }
 
 .generator-param-header {
@@ -109,6 +129,11 @@ main {
   /* min-width: 700px;
   max-width: 1000px; */
   padding-right: 10px;
+}
+
+.generator-preview {
+  display: block;
+  margin: 0 auto;
 }
 
 .generate-btn {
@@ -144,6 +169,13 @@ main {
 
 .download-link:hover {
   background-color: #0056b3;
+}
+
+.editor-main-container {
+  background-image: url('./images/editor_test.png');
+  background-size: cover;
+  background-position: center;
+  color: white;
 }
 
 .image-effects-explain {

@@ -56,7 +56,7 @@ const Editor = () => {
       {pngUrl && <img className='generator-preview' id='editor-in-preview' src={pngUrl} alt='your .png here' />}
       &nbsp;
       {pngUrl &&
-        <>
+        <div className='editor-main-container'>
           <h4 className='image-effects-explain'><i>Set slider to 0 to de-activate that algorithm</i></h4>
           <div className='generator-slider-container'>
             <h4 className='generator-param-preview'>Warp (Currently {warpAmount})</h4>
@@ -82,7 +82,7 @@ const Editor = () => {
             <h4 className='generator-param-preview'>Y-Shift (Currently {shiftAmountY})</h4>
             <input className='generator-slider' type='range' value={shiftAmountY} onChange={e => setShiftAmountY(e.target.value)} min='0' max='50' step='1'/>
           </div>
-        </>
+        </div>
       }
       <h3 className='editor-subheader'>PNG Output</h3>
       <button className='generate-btn' onClick={handleCreateNewPng}>Generate New .png</button>
