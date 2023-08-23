@@ -4,11 +4,151 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
+  padding-bottom: 20px;
+}
+
+.main-header {
+  margin: 10px 0;
+}
+
+.user-email {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: white;
+  font-size: 14px;
+  padding-bottom: 25px;
+}
+
+.sign-in, .sign-out {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.sign-in:hover, .sign-out:hover {
+  background-color: #0056b3;
+}
+
+main {
+  padding: 20px;
+}
+
+.navbar-list {
+  list-style: none; 
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0;
+  margin: 0;
+  background-color: white;
+  position: relative;
+  top: auto;
+  left: 0;
+  width: 100%;
+}
+
+.navbar-list-item {
+  padding: 10px;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.navbar-link:hover {
+  color: #007bff;
+}
+
+.page {
+  color: black;
+  font-size: 24px;
+}
+
+.generator-preview {
+  display: block;
+  margin: 0 auto;
+}
+
+.generator-param-header {
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.generator-param-preview {
+  margin-top: 10px;
+  max-width: 300px;
+}
+
+.generator-slider-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.generator-slider {
+  flex: 1;
+  margin: 0 5px;
+  width: 400px;
+  min-width: 400px;
+}
+
+.generate-btn {
+  margin-top: 20px;
+}
+
+.image-effects-explain {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.editor-subheader {
+  font-size: 20px;
+  margin-top: 15px;
+}
+
+.new-png-preview {
+  max-width: 100%;
+  height: auto;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .App-header {
+    font-size: calc(8px + 2vmin);
+  }
+  
+  .main-header {
+    font-size: 18px;
+  }
+  
+  .sign-in, .sign-out {
+    font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .App-header {
+    font-size: calc(10px + 2vmin);
+  }
+  
+  .main-header {
+    font-size: 24px;
+  }
+  
+  .sign-in, .sign-out {
+    font-size: 16px;
+  }
 }
