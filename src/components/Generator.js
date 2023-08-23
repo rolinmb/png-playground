@@ -47,12 +47,11 @@ const Generator = () => {
       }
     }
     ctx.putImageData(imageData, 0, 0);
-    var previewImg = document.getElementById('generator-preview');
+    var previewImg = document.getElementById('generator-out-preview');
     previewImg.src = canvas.toDataURL('image/png');
     previewImg.style.display = 'block';
-    var downloadLink = document.getElementById('download-link');
+    var downloadLink = document.getElementById('generator-download-link');
     downloadLink.href = canvas.toDataURL('image/png');
-    downloadLink.download = 'canvas.png';
     downloadLink.style.display = 'block';
   }
 
@@ -77,7 +76,7 @@ const Generator = () => {
         <h4 className='generator-param-preview'>Grid Amplitude (Currently {gridAmplitude})</h4>
         <input className='generator-slider' type='range' value={gridAmplitude} onChange={e => setGridAmplitude(e.target.value)} min='0' max='1000' step='5' />
       </div>
-      <h3 className='generator-param-preview'><i>Warping</i></h3>
+      <h3 className='generator-param-header'><i>Warping</i></h3>
       <div className='generator-slider-container'>
         <h4 className='generator-param-preview'>Warp Scaling (Currently {warpScaling})</h4>
         <input className='generator-slider' type='range' value={warpScaling} onChange={e => setWarpScaling(e.target.value)} min='0' max='1000' step='5' />
@@ -87,9 +86,9 @@ const Generator = () => {
         <input className='generator-slider' type='range' value={warpTessellate} onChange={e => setWarpTessellate(e.target.value)} min='0' max='250' step='1' />
       </div>
       <button className='generate-btn' onClick={e => generatePng(e)}>Generate</button>
-      <a href='' className='download-link' id='download-link' style={{display: 'none'}}>Download new .png</a>
+      <a href='/' className='download-link' id='generator-download-link' download='generator_out.png' style={{display: 'none'}}>Download new .png</a>
       <h4>Generator Preview</h4>
-      <img className='generator-preview' id='generator-out-preview' style={{display: 'none'}}/>
+      <img className='generator-preview' id='generator-out-preview' style={{display: 'none'}} alt='generator output .png' />
     </div>
   );
 }

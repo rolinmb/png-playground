@@ -40,6 +40,9 @@ const Editor = () => {
         imageData = shiftAlgorithm(imageData, shiftAmountX, shiftAmountY, canvas.width, canvas.height);
         ctx.putImageData(imageData, 0, 0);
         setNewPngUrl(canvas.toDataURL('image/png'));
+        var downloadLink = document.getElementById('editor-download-link');
+        downloadLink.href = canvas.toDataURL('image/png');
+        downloadLink.style.display = 'block';
       }
     }
   }
@@ -83,8 +86,9 @@ const Editor = () => {
       }
       <h3 className='editor-subheader'>PNG Output</h3>
       <button className='generate-btn' onClick={handleCreateNewPng}>Generate New .png</button>
+      <a href='/' className='download-link' id='editor-download-link' download='editor_out.png' style={{display: 'none'}}>Download new .png</a>
       <br /><br />
-      {newPngUrl && <img className='generator-preview' id='editor-out-preview' src={newPngUrl} alt='new .png here' />}
+      {newPngUrl && <img className='generator-preview' id='editor-out-preview' src={newPngUrl} alt='editor output .png' />}
     </div>
   );
 }
