@@ -58,8 +58,8 @@ const Generator = () => {
   return (
     <div className='page'>
       <h2 className='page-header'>PNG Generator</h2>
-      <h3 className='generator-param-header'><i>Output Dimensions</i></h3>
       <div className='generator-main-container'>
+      <h3 className='generator-param-header'><i>Output Dimensions</i></h3>
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>Width (Currently {canvasWidth} px)</h4>
           <input className='generator-slider' type='range' value={canvasWidth} onChange={e => setCanvasWidth(e.target.value)} min='400' max='1500' step='10' />
