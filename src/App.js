@@ -31,12 +31,6 @@ function App() {
       <main>
         {user ? <Home /> : null}
       </main>
-      <footer>
-        Made by Rolin Blake
-        |&nbsp;<a href='https://github.com/rolinmb'>GitHub</a> 
-        &nbsp;|&nbsp;<a href='https://www.linkedin.com/in/rolin-blake/'>LinkedIn</a>
-        &nbsp;|&nbsp;<a href='https://rmb-portfolio.web.app'>Portfolio</a>
-      </footer>
     </div>
   );
 }
