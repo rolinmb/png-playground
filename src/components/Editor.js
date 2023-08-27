@@ -5,9 +5,9 @@ const Editor = () => {
   const [newPngUrl, setNewPngUrl] = useState('');
   const [warpAmount, setWarpAmount] = useState(1.25);
   const [warpSelectionX, setWarpSelectionX] = useState('sin');
-  const [warpSelectionY, setWarpSelectionY] = useState('cos');
+  const [warpSelectionY, setWarpSelectionY] = useState('sin');
   const [swirlAmount, setSwirlAmount] = useState(0.02);
-  const [swirlSelectionX, setSwirlSelectionX] = useState('cos');
+  const [swirlSelectionX, setSwirlSelectionX] = useState('sin');
   const [swirlSelectionY, setSwirlSelectionY] = useState('sin');
   const [repeatFactor, setRepeatFactor] = useState(0.02);
   const [repeatIters, setRepeatIters] = useState(0);

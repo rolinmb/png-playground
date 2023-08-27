@@ -8,10 +8,12 @@ const Generator = () => {
   const [gridSelection, setGridSelection] = useState('sin');
   const [warpScaling, setWarpScaling] = useState(10);
   const [warpTessellate, setWarpTessellate] = useState(50);
-  const [warpSelection, setWarpSelection] = useState('sin');
+  const [warpSelectionX, setWarpSelectionX] = useState('sin');
+  const [warpSelectionY, setWarpSelectionY] = useState('sin');
   const [shiftAmountX, setShiftAmountX] = useState(20);
   const [shiftAmountY, setShiftAmountY] = useState(10);
-  const [shiftSelection, setShiftSelection] = useState('sin');
+  const [shiftSelectionX, setShiftSelectionX] = useState('sin');
+  const [shiftSelectionY, setShiftSelectionY] = useState('sin');
 
   function generateGrid(ctx, width, height) {
     var gridFn = null;
@@ -42,24 +44,38 @@ const Generator = () => {
 
   function shiftAlgorithm(imageData, width, height) {
     const data = imageData.data.slice();
-    var shiftFn = null;
-    switch (shiftSelection) {
+    var shiftFnX = null;
+    var shiftFnY = null;
+    switch (shiftSelectionX) {
       case 'sin':
-        shiftFn = Math.sin;
+        shiftFnX = Math.sin;
         break;
       case 'cos':
-        shiftFn = Math.cos;
+        shiftFnX = Math.cos;
         break;
       case 'tan':
-        shiftFn = Math.tan;
+        shiftFnX = Math.tan;
+        break;
+      default:
+        break;
+    }
+    switch (shiftSelectionY) {
+      case 'sin':
+        shiftFnY = Math.sin;
+        break;
+      case 'cos':
+        shiftFnY = Math.cos;
+        break;
+      case 'tan':
+        shiftFnY = Math.tan;
         break;
       default:
         break;
     }
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const sourceX = x + Math.round(shiftFn(y / shiftAmountY) * shiftAmountX);
-        const sourceY = y + Math.round(shiftFn(x / shiftAmountX) * shiftAmountY);
+        const sourceX = x + Math.round(shiftFnX(y / shiftAmountY) * shiftAmountX);
+        const sourceY = y + Math.round(shiftFnY(x / shiftAmountX) * shiftAmountY);
         if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
           const sourceIndex = (sourceY * width + sourceX) * 4;
           const targetIndex = (y * width + x) * 4;
@@ -86,24 +102,38 @@ const Generator = () => {
   */
   function applyWarp(imageData, width, height) {
     var data = imageData.data;
-    var warpFn = null;
-    switch (warpSelection) {
+    var warpFnX = null;
+    var warpFnY = null;
+    switch (warpSelectionX) {
       case 'sin':
-        warpFn = Math.sin;
+        warpFnX = Math.sin;
         break;
       case 'cos':
-        warpFn = Math.cos;
+        warpFnX = Math.cos;
         break;
       case 'tan':
-        warpFn = Math.tan;
+        warpFnX = Math.tan;
+        break;
+      default:
+        break;
+    }
+    switch (warpSelectionY) {
+      case 'sin':
+        warpFnY = Math.sin;
+        break;
+      case 'cos':
+        warpFnY = Math.cos;
+        break;
+      case 'tan':
+        warpFnY = Math.tan;
         break;
       default:
         break;
     }
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < width; y++) {
-        let offsetX = warpFn(y / warpTessellate) * warpScaling;
-        let offsetY = warpFn(x / warpTessellate) * warpScaling;
+        let offsetX = warpFnX(y / warpTessellate) * warpScaling;
+        let offsetY = warpFnY(x / warpTessellate) * warpScaling;
         let sourceX = x + offsetX;
         let sourceY = y + offsetY;
         if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
@@ -178,8 +208,16 @@ const Generator = () => {
           <input className='generator-slider' type='range' value={shiftAmountY} onChange={e => setShiftAmountY(e.target.value)} min='0' max='50' step='1'/>
         </div>
         <div className='generator-select-container'>
-          <h4 className='generator-param-preview'>Shift Function (Currently {shiftSelection})</h4>
-          <select className='generator-selection' id='generator-shift-selection' onChange={e => setShiftSelection(e.target.value)}>
+          <h4 className='generator-param-preview'>Shift Function X (Currently {shiftSelectionX})</h4>
+          <select className='generator-selection' id='generator-shift-selection' onChange={e => setShiftSelectionX(e.target.value)}>
+            <option value='sin'>Sine</option>
+            <option value='cos'>Cosine</option>
+            <option value='tan'>Tangent</option>
+          </select>
+        </div>
+        <div className='generator-select-container'>
+          <h4 className='generator-param-preview'>Shift Function Y (Currently {shiftSelectionY})</h4>
+          <select className='generator-selection' id='generator-shift-selection' onChange={e => setShiftSelectionY(e.target.value)}>
             <option value='sin'>Sine</option>
             <option value='cos'>Cosine</option>
             <option value='tan'>Tangent</option>
@@ -195,8 +233,16 @@ const Generator = () => {
           <input className='generator-slider' type='range' value={warpTessellate} onChange={e => setWarpTessellate(e.target.value)} min='0' max='250' step='1' />
         </div>
         <div className='generator-select-container'>
-          <h4 className='generator-param-preview'>Warp Function (Currently {warpSelection})</h4>
-          <select className='generator-selection' id='generator-warp-selection' onChange={e => setWarpSelection(e.target.value)}>
+          <h4 className='generator-param-preview'>Warp Function X (Currently {warpSelectionX})</h4>
+          <select className='generator-selection' id='generator-warp-selection' onChange={e => setWarpSelectionX(e.target.value)}>
+            <option value='sin'>Sine</option>
+            <option value='cos'>Cosine</option>
+            <option value='tan'>Tangent</option>
+          </select>
+        </div>
+        <div className='generator-select-container'>
+          <h4 className='generator-param-preview'>Warp Function Y (Currently {warpSelectionY})</h4>
+          <select className='generator-selection' id='generator-warp-selection' onChange={e => setWarpSelectionY(e.target.value)}>
             <option value='sin'>Sine</option>
             <option value='cos'>Cosine</option>
             <option value='tan'>Tangent</option>
