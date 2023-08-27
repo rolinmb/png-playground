@@ -131,6 +131,18 @@ main {
   padding-right: 10px;
 }
 
+.generator-select-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  max-width: 1000px;
+}
+
+.generator-selection {
+  padding: 5px;
+  font-size: 16px;
+}
+
 .generator-preview {
   display: block;
   margin: 0 auto;

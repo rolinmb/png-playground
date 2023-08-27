@@ -9,6 +9,7 @@ const Editor = () => {
   const [repeatIters, setRepeatIters] = useState(0);
   const [shiftAmountX, setShiftAmountX] = useState(20);
   const [shiftAmountY, setShiftAmountY] = useState(10);
+
   const handlePngUpload = (event) => {
     event.preventDefault();
     const file = event.target.files[0];
@@ -23,6 +24,7 @@ const Editor = () => {
       reader.readAsDataURL(file);
     }
   }
+
   const handleCreateNewPng = () => {
     if (pngUrl) {
       const canvas = document.createElement('canvas');
@@ -46,6 +48,7 @@ const Editor = () => {
       }
     }
   }
+  
   return (
     <div className='page'>
       <h2 className='page-header'>Image Processing Algorithms</h2>
