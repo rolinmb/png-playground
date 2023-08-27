@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
 const Generator = () => {
-  const [canvasWidth, setCanvasWidth] = useState(400);
-  const [canvasHeight, setCanvasHeight] = useState(400);
+  const [canvasWidth, setCanvasWidth] = useState(1600);
+  const [canvasHeight, setCanvasHeight] = useState(1600);
   const [gridFrequency, setGridFrequency] = useState(10);
   const [gridAmplitude, setGridAmplitude] = useState(200);
   const [gridSelection, setGridSelection] = useState('sin');
@@ -14,11 +14,25 @@ const Generator = () => {
   const [shiftSelection, setShiftSelection] = useState('sin');
 
   function generateGrid(ctx, width, height) {
+    var gridFn = null;
+    switch (gridSelection) {
+      case 'sin':
+        gridFn = Math.sin;
+        break;
+      case 'cos':
+        gridFn = Math.cos;
+        break;
+      case 'tan':
+        gridFn = Math.tan;
+        break;
+      default:
+        break;
+    }
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < height; y++) {
-        let r = Math.sin(x * gridFrequency) * gridAmplitude;
-        let g = Math.sin(y * gridFrequency) * gridAmplitude;
-        let b = Math.sin((x + y) * gridFrequency) * gridAmplitude;
+        let r = gridFn(x * gridFrequency) * gridAmplitude;
+        let g = gridFn(y * gridFrequency) * gridAmplitude;
+        let b = gridFn((x + y) * gridFrequency) * gridAmplitude;
         let color = 'rgb(' + Math.floor(r) + ', ' + Math.floor(g) + ', ' + Math.floor(b) + ')';
         ctx.fillStyle = color;
         ctx.fillRect(x, y, 1, 1);
@@ -28,10 +42,24 @@ const Generator = () => {
 
   function shiftAlgorithm(imageData, width, height) {
     const data = imageData.data.slice();
+    var shiftFn = null;
+    switch (shiftSelection) {
+      case 'sin':
+        shiftFn = Math.sin;
+        break;
+      case 'cos':
+        shiftFn = Math.cos;
+        break;
+      case 'tan':
+        shiftFn = Math.tan;
+        break;
+      default:
+        break;
+    }
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const sourceX = x + Math.round(Math.sin(y / shiftAmountY) * shiftAmountX);
-        const sourceY = y + Math.round(Math.sin(x / shiftAmountX) * shiftAmountY);
+        const sourceX = x + Math.round(shiftFn(y / shiftAmountY) * shiftAmountX);
+        const sourceY = y + Math.round(shiftFn(x / shiftAmountX) * shiftAmountY);
         if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
           const sourceIndex = (sourceY * width + sourceX) * 4;
           const targetIndex = (y * width + x) * 4;
@@ -58,10 +86,24 @@ const Generator = () => {
   */
   function applyWarp(imageData, width, height) {
     var data = imageData.data;
+    var warpFn = null;
+    switch (warpSelection) {
+      case 'sin':
+        warpFn = Math.sin;
+        break;
+      case 'cos':
+        warpFn = Math.cos;
+        break;
+      case 'tan':
+        warpFn = Math.tan;
+        break;
+      default:
+        break;
+    }
     for (let x = 0; x < width; x++) {
       for (let y = 0; y < width; y++) {
-        let offsetX = Math.sin(y / warpTessellate) * warpScaling;
-        let offsetY = Math.sin(x / warpTessellate) * warpScaling;
+        let offsetX = warpFn(y / warpTessellate) * warpScaling;
+        let offsetY = warpFn(x / warpTessellate) * warpScaling;
         let sourceX = x + offsetX;
         let sourceY = y + offsetY;
         if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
@@ -103,20 +145,20 @@ const Generator = () => {
       <h3 className='generator-param-header'><i>Output Dimensions</i></h3>
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>Width (Currently {canvasWidth} px)</h4>
-          <input className='generator-slider' type='range' value={canvasWidth} onChange={e => setCanvasWidth(e.target.value)} min='400' max='1500' step='10' />
+          <input className='generator-slider' type='range' value={canvasWidth} onChange={e => setCanvasWidth(e.target.value)} min='500' max='2400' step='10' />
         </div>
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>Height (Currently {canvasHeight} px)</h4>
-          <input className='generator-slider' type='range' value={canvasHeight} onChange={e => setCanvasHeight(e.target.value)} min='400' max='1500' step='10' />
+          <input className='generator-slider' type='range' value={canvasHeight} onChange={e => setCanvasHeight(e.target.value)} min='500' max='2400' step='10' />
         </div>
         <h3 className='generator-param-header'><i>Grid Generation</i></h3>
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>Grid Frequency (Currently {gridFrequency})</h4>
-          <input className='generator-slider' type='range' value={gridFrequency} onChange={e => setGridFrequency(e.target.value)} min='0' max='1000' step='5' />
+          <input className='generator-slider' type='range' value={gridFrequency} onChange={e => setGridFrequency(e.target.value)} min='0' max='500' step='1' />
         </div>
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>Grid Amplitude (Currently {gridAmplitude})</h4>
-          <input className='generator-slider' type='range' value={gridAmplitude} onChange={e => setGridAmplitude(e.target.value)} min='0' max='1000' step='5' />
+          <input className='generator-slider' type='range' value={gridAmplitude} onChange={e => setGridAmplitude(e.target.value)} min='0' max='100' step='0.25' />
         </div>
         <div className='generator-select-container'>
           <h4 className='generator-param-preview'>Grid Function (Currently {gridSelection})</h4>
@@ -126,7 +168,7 @@ const Generator = () => {
             <option value='tan'>Tangent</option>
           </select>
         </div>
-        <h3>Shift</h3>
+        <h3 className='generator-param-header'><i>Shift</i></h3>
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>X-Shift (Currently {shiftAmountX})</h4>
           <input className='generator-slider' type='range' value={shiftAmountX} onChange={e => setShiftAmountX(e.target.value)} min='0' max='50' step='1'/>
