@@ -123,6 +123,31 @@ const Editor = () => {
     return imageData;
   }
 
+  function repeatAlgorithm(imageData, width, height) {
+    const data = imageData.data.slice();
+    for (let iter = 0; iter < repeatIters; iter++) {
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const offsetX = (x - width / 2) * repeatFactor;
+          const offsetY = (y - height / 2) * repeatFactor;
+          const sourceX = Math.floor(x + offsetX);
+          const sourceY = Math.floor(y + offsetY);
+          if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
+            const sourceIndex = (sourceY * width + sourceX) * 4;
+            const targetIndex = (y * width + x) * 4;
+            data[targetIndex] = imageData.data[sourceIndex];         // r
+            data[targetIndex + 1] = imageData.data[sourceIndex + 1]; // g
+            data[targetIndex + 2] = imageData.data[sourceIndex + 2]; // b
+          }
+        }
+      }
+      for (let i = 0; i < data.length; i++) {
+        imageData.data[i] = data[i];
+      }
+    }
+    return imageData;
+  }
+
   function shiftAlgorithm(imageData, width, height) {
     const data = imageData.data.slice();
     var shiftFnX = null;
@@ -200,7 +225,7 @@ const Editor = () => {
         var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         imageData = fuzzyAlgorithm(imageData, canvas.width, canvas.height);
         imageData = swirlAlgorithm(imageData, canvas.width, canvas.height);
-        imageData = repeatAlgorithm(imageData, repeatFactor, repeatIters, canvas.width, canvas.height);
+        imageData = repeatAlgorithm(imageData, canvas.width, canvas.height);
         imageData = shiftAlgorithm(imageData, canvas.width, canvas.height);
         ctx.putImageData(imageData, 0, 0);
         setNewPngUrl(canvas.toDataURL('image/png'));
@@ -304,31 +329,6 @@ const Editor = () => {
       {newPngUrl && <img className='generator-preview' id='editor-out-preview' src={newPngUrl} alt='editor output .png' />}
     </div>
   );
-}
-
-function repeatAlgorithm(imageData, repeatFactor, iterations, width, height) {
-  const data = imageData.data.slice();
-  for (let iter = 0; iter < iterations; iter++) {
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
-        const offsetX = (x - width / 2) * repeatFactor;
-        const offsetY = (y - height / 2) * repeatFactor;
-        const sourceX = Math.floor(x + offsetX);
-        const sourceY = Math.floor(y + offsetY);
-        if (sourceX >= 0 && sourceX < width && sourceY >= 0 && sourceY < height) {
-          const sourceIndex = (sourceY * width + sourceX) * 4;
-          const targetIndex = (y * width + x) * 4;
-          data[targetIndex] = imageData.data[sourceIndex];         // r
-          data[targetIndex + 1] = imageData.data[sourceIndex + 1]; // g
-          data[targetIndex + 2] = imageData.data[sourceIndex + 2]; // b
-        }
-      }
-    }
-    for (let i = 0; i < data.length; i++) {
-      imageData.data[i] = data[i];
-    }
-  }
-  return imageData;
 }
 
 export default Editor;

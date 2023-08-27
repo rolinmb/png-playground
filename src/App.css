@@ -143,6 +143,17 @@ main {
   font-size: 16px;
 }
 
+.generator-checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  max-width: 1000px;
+}
+
+.generator-checkbox {
+  margin-right: 10px;
+}
+
 .generator-preview {
   display: block;
   margin: 0 auto;

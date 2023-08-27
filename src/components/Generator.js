@@ -8,6 +8,8 @@ const Generator = () => {
   const [gridSelection, setGridSelection] = useState('sin');
   const [fractalDepth, setFractalDepth] = useState(6);
   const [fractalScale, setFractalScale] = useState(0.5);
+  const [applyMandelbrot, setApplyMandelbrot] = useState(false);
+  const [mandelbrotIters, setMandelbrotIters] = useState(1000);
   const [warpScaling, setWarpScaling] = useState(10);
   const [warpTessellate, setWarpTessellate] = useState(50);
   const [warpSelectionX, setWarpSelectionX] = useState('sin');
@@ -45,6 +47,7 @@ const Generator = () => {
   }
 
   function getRandomColor() {
+    const letters = '0123456789ABCDEF';
     const epochTimeInSeconds = Math.floor(new Date().getTime() / 1000);
     const seed = epochTimeInSeconds;
     let seedRandom = function(seed) {
@@ -54,7 +57,6 @@ const Generator = () => {
       }
     }
     const lcgRandom = seedRandom(seed);
-    const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(lcgRandom() * 16)];
@@ -81,6 +83,49 @@ const Generator = () => {
     generateFractal(ctx, [verticies[0], midpoints[0], midpoints[2]], depth - 1);
     generateFractal(ctx, [midpoints[0], verticies[1], midpoints[1]], depth - 1);
     generateFractal(ctx, [midpoints[2], midpoints[1], verticies[2]], depth - 1);
+  }
+
+  function updateMandelbrotCheck() {
+    setApplyMandelbrot(!applyMandelbrot);
+  }
+
+  function mandelbrot(real, imag) {
+    let zReal = real;
+    let zImag = imag;
+    let n = 0;
+    while (n < mandelbrotIters) {
+      const zRealSqr = zReal * zReal;
+      const zImagSqr = zImag * zImag;
+      if (zRealSqr + zImagSqr > 4) {
+        return n;
+      }
+      zImag = 2 * zReal * zImag + imag;
+      zReal = zRealSqr - zImagSqr + real;
+      n++;
+    }
+    return n;
+  }
+
+  function generateMandelbrot(imageData, width, height) {
+    var data = imageData.data;
+    const xMin = -2.5;
+    const xMax = 1.5;
+    const yMin = -2.0;
+    const yMax = 2.0;
+    for (let x = 0; x < width; x++) {
+      for (let y = 0; y < height; y++) {
+        const real = xMin + (x / width) * (xMax - xMin);
+        const imag = yMin + (y / height) * (yMax - yMin);
+        const iterations = mandelbrot(real, imag);
+        const color = iterations === mandelbrotIters ? [0, 0, 0] : [iterations % 255, 255, iterations % 255];
+        const index = (y * width + x) * 4;
+        data[index] = color[0];     // r
+        data[index + 1] = color[1]; // g
+        data[index + 2] = color[2]; // b
+        data[index + 3] = 255;      // a
+      }
+    }
+    return imageData;
   }
 
   function shiftAlgorithm(imageData, width, height) {
@@ -132,7 +177,7 @@ const Generator = () => {
     return imageData;
   }
   
-  function applyWarp(imageData, width, height) {
+  function warpAlgorithm(imageData, width, height) {
     var data = imageData.data;
     var warpFnX = null;
     var warpFnY = null;
@@ -195,8 +240,12 @@ const Generator = () => {
     ];
     generateFractal(ctx, initVerticies, fractalDepth);
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (applyMandelbrot) {
+      imageData = generateMandelbrot(imageData, canvas.width, canvas.height);
+    }
+    ctx.putImageData(imageData, 0, 0);
     imageData = shiftAlgorithm(imageData, canvas.width, canvas.height);
-    imageData = applyWarp(imageData, canvas.width, canvas.height);
+    imageData = warpAlgorithm(imageData, canvas.width, canvas.height);
     ctx.putImageData(imageData, 0, 0);
     var previewImg = document.getElementById('generator-out-preview');
     previewImg.src = canvas.toDataURL('image/png');
@@ -244,6 +293,15 @@ const Generator = () => {
         <div className='generator-slider-container'>
           <h4 className='generator-param-preview'>Fractal Scale (Currently {fractalScale})</h4>
           <input className='generator-slider' type='range' value={fractalScale} onChange={e => setFractalScale(e.target.value)} min='0' max='100' step='0.25' />
+        </div>
+        <h3 className='generator-param-header'><i>Mandelbrot Generation</i></h3>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Mandelbrot Iterations (Currently {mandelbrotIters})</h4>
+          <input className='generator-slider' type='range' value={mandelbrotIters} onChange={e => setMandelbrotIters(e.target.value)} min='0' max='2000' step='1' />
+        </div>
+        <div className='generator-checkbox-container'>
+          <h4 className='generator-param-preview'>Mandelbrot On/Off (Currently {applyMandelbrot ? 'On' : 'Off'})</h4>
+          <input className='generator-checkbox' type='checkbox' checked={applyMandelbrot} onChange={updateMandelbrotCheck} />
         </div>
         <h3 className='generator-param-header'><i>Shift</i></h3>
         <div className='generator-slider-container'>
