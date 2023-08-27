@@ -6,6 +6,8 @@ const Generator = () => {
   const [gridFrequency, setGridFrequency] = useState(10);
   const [gridAmplitude, setGridAmplitude] = useState(200);
   const [gridSelection, setGridSelection] = useState('sin');
+  const [fractalDepth, setFractalDepth] = useState(6);
+  const [fractalScale, setFractalScale] = useState(0.5);
   const [warpScaling, setWarpScaling] = useState(10);
   const [warpTessellate, setWarpTessellate] = useState(50);
   const [warpSelectionX, setWarpSelectionX] = useState('sin');
@@ -40,6 +42,45 @@ const Generator = () => {
         ctx.fillRect(x, y, 1, 1);
       }
     }
+  }
+
+  function getRandomColor() {
+    const epochTimeInSeconds = Math.floor(new Date().getTime() / 1000);
+    const seed = epochTimeInSeconds;
+    let seedRandom = function(seed) {
+      return function() {
+        seed = (seed * 9301 + 49297) % 233280;
+        return seed / 233280
+      }
+    }
+    const lcgRandom = seedRandom(seed);
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(lcgRandom() * 16)];
+    }
+    return color;
+  }
+
+  function generateFractal(ctx, verticies, depth) {
+    if (depth <= 0) {
+      return;
+    }
+    ctx.beginPath();
+    ctx.moveTo(verticies[0].x, verticies[0].y);
+    ctx.lineTo(verticies[1].x, verticies[1].y);
+    ctx.lineTo(verticies[2].x, verticies[2].y);
+    ctx.closePath();
+    ctx.fillStyle = getRandomColor();
+    ctx.fill();
+    const midpoints = [
+      { x: (verticies[0].x + verticies[1].x) * fractalScale, y: (verticies[0].y + verticies[1].y) * fractalScale },
+      { x: (verticies[1].x + verticies[2].x) * fractalScale, y: (verticies[1].y + verticies[2].y) * fractalScale },
+      { x: (verticies[2].x + verticies[0].x) * fractalScale, y: (verticies[2].y + verticies[0].y) * fractalScale }
+    ];
+    generateFractal(ctx, [verticies[0], midpoints[0], midpoints[2]], depth - 1);
+    generateFractal(ctx, [midpoints[0], verticies[1], midpoints[1]], depth - 1);
+    generateFractal(ctx, [midpoints[2], midpoints[1], verticies[2]], depth - 1);
   }
 
   function shiftAlgorithm(imageData, width, height) {
@@ -90,16 +131,7 @@ const Generator = () => {
     }
     return imageData;
   }
-  /*
-  function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-  */
+  
   function applyWarp(imageData, width, height) {
     var data = imageData.data;
     var warpFnX = null;
@@ -156,6 +188,12 @@ const Generator = () => {
     canvas.height = canvasHeight;
     var ctx = canvas.getContext('2d');
     generateGrid(ctx, canvas.width, canvas.height);
+    const initVerticies = [
+      { x: canvas.width / 2, y: 100},
+      { x: 100, y: canvas.height - 100 },
+      { x: canvas.width - 100, y: canvas.height - 100 }
+    ];
+    generateFractal(ctx, initVerticies, fractalDepth);
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     imageData = shiftAlgorithm(imageData, canvas.width, canvas.height);
     imageData = applyWarp(imageData, canvas.width, canvas.height);
@@ -197,6 +235,15 @@ const Generator = () => {
             <option value='cos'>Cosine</option>
             <option value='tan'>Tangent</option>
           </select>
+        </div>
+        <h3 className='generator-param-header'><i>Fractal Generation</i></h3>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Fractal Iterations (Currently {fractalDepth})</h4>
+          <input className='generator-slider' type='range' value={fractalDepth} onChange={e => setFractalDepth(e.target.value)} min='0' max='10' step='1' />
+        </div>
+        <div className='generator-slider-container'>
+          <h4 className='generator-param-preview'>Fractal Scale (Currently {fractalScale})</h4>
+          <input className='generator-slider' type='range' value={fractalScale} onChange={e => setFractalScale(e.target.value)} min='0' max='100' step='0.25' />
         </div>
         <h3 className='generator-param-header'><i>Shift</i></h3>
         <div className='generator-slider-container'>
