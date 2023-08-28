@@ -238,7 +238,7 @@ const Editor = () => {
   
   return (
     <div className='page'>
-      <h2 className='page-header'>Image Processing Algorithms</h2>
+      <h2 className='page-header'>.png Processing Algorithms</h2>
       <h3 className='editor-subheader'>PNG Input</h3>
       &nbsp;
       <input className='file-upload-btn' type='file' accept='.png' onChange={e => handlePngUpload(e)}/>

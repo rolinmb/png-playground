@@ -4,6 +4,7 @@ import Nav from './Nav';
 import Welcome from './Welcome';
 import Generator from './Generator';
 import Editor from './Editor';
+import Interpolator from './Interpolator';
 
 const Home = () => {
   return(
@@ -16,6 +17,7 @@ const Home = () => {
           <Route path='/welcome' element={<Welcome />}/>
           <Route path='/generator' element={<Generator />}/>
           <Route path='/editor' element={<Editor />}/>
+          <Route path='/interpolator' element={<Interpolator />} />
         </Routes>
       </BrowserRouter>
     </>
