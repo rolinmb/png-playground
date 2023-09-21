@@ -257,7 +257,7 @@ const Generator = () => {
 
   return (
     <div className='page'>
-      <h2 className='page-header'>PNG Generator</h2>
+      <h2 className='page-header'>Classic .png Generator</h2>
       <div className='generator-main-container'>
       <h3 className='generator-param-header'><i>Output Dimensions</i></h3>
         <div className='generator-slider-container'>
