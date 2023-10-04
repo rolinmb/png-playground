@@ -19,12 +19,12 @@ function App() {
           <>
             <h1 className='main-header'>PNG Playground</h1>
             <p className='user-email'>{user.email}</p>
-            <SignOut />
+            {/*<SignOut />*/}
           </>
           : /* Below Here Displays When Signed Out */
           <> 
             <h1 className='main-header'>Sign In With Google (GMail) To Use PNG Playground</h1>
-            <SignIn />
+            {/*<SignIn />*/}
           </>
         }
       </header>
@@ -34,7 +34,7 @@ function App() {
     </div>
   );
 }
-
+/*
 function SignIn() {
   const signInWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -52,5 +52,5 @@ function SignOut() {
     <button className='sign-out' onClick={() => auth.signOut()}>Sign Out</button>
   )
 }
-
+*/
 export default App;

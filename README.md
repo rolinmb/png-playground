@@ -1,1 +1,1 @@
-Use the app at [png-playground.web.app](https://png-playground.web.app/)
+Taken offline due to security reasons.
